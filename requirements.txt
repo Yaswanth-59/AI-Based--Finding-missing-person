@@ -1,0 +1,8 @@
+Flask>=3.0
+Werkzeug>=3.0
+SQLModel>=0.0.22
+pandas>=2.1.0
+numpy>=1.26.0
+scikit-learn>=1.3.0
+Pillow>=10.0
+opencv-contrib-python==4.13.0.92
