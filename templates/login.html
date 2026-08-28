@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Login — Missing Person AI{% endblock %}
+
+{% block authcontent %}
+
+<div class="loginwrap">
+
+```
+<div class="loginbox">
+
+    <!-- Logo -->
+    <div class="logo">
+        🔎
+    </div>
+
+
+    <!-- Heading -->
+    <h1>
+        Missing Person AI
+    </h1>
+
+    <p class="login-subtitle">
+        Secure Officer & Admin Portal
+    </p>
+
+
+    <!-- System Status -->
+    <div class="login-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+            AI Identification System
+        </span>
+
+    </div>
+
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="login-alerts">
+
+                {% for category, msg in messages %}
+
+                    <div class="alert {{ category }}">
+
+                        {% if category == 'success' %}
+                            <span>✅</span>
+                        {% elif category == 'danger' %}
+                            <span>❌</span>
+                        {% elif category == 'warning' %}
+                            <span>⚠️</span>
+                        {% else %}
+                            <span>ℹ️</span>
+                        {% endif %}
+
+                        <span>
+                            {{ msg }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- Login Form -->
+    <form method="post" class="login-form">
+
+        <div class="input-group">
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                id="username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                required
+                placeholder="Enter username"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="Enter password"
+            >
+
+        </div>
+
+
+        <button type="submit">
+            🔐 Sign In
+        </button>
+
+    </form>
+
+
+    <!-- Demo Credentials -->
+    <div class="demo-box">
+
+        <strong>Demo Login</strong>
+
+        <p>
+            Username: <code>admin</code>
+        </p>
+
+        <p>
+            Password: <code>admin123</code>
+        </p>
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="login-footer">
+
+        <span>🔒 Secure Portal</span>
+
+        <span>•</span>
+
+        <span>AI-Assisted Identification</span>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}
+
