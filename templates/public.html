@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block heading %}Submit Found / Public Case{% endblock %}
+
+{% block content %}
+
+<section class="panel form-panel">
+
+
+<div class="panelhead">
+    <div>
+        <h2>📷 Found Person Information</h2>
+        <p>
+            Submit a photograph and available information about a found person.
+            The uploaded photo will be prepared for AI face matching.
+        </p>
+    </div>
+</div>
+
+
+<form
+    class="form narrow"
+    method="post"
+    enctype="multipart/form-data"
+>
+
+    <!-- Photo -->
+    <div class="form-section">
+
+        <h3>📸 Person Photograph</h3>
+
+        <label for="photo">
+            Photo <span class="required">*</span>
+        </label>
+
+        <input
+            id="photo"
+            type="file"
+            name="photo"
+            accept="image/jpeg,image/png,image/webp"
+            required
+        >
+
+        <p class="field-hint">
+            Upload a clear front-facing photograph.
+            JPG, PNG or WEBP format is recommended.
+        </p>
+
+    </div>
+
+
+    <!-- Location -->
+    <div class="form-section">
+
+        <h3>📍 Location Information</h3>
+
+        <label for="location">
+            Found Location
+        </label>
+
+        <input
+            id="location"
+            name="location"
+            type="text"
+            placeholder="Enter the location where the person was found"
+        >
+
+    </div>
+
+
+    <!-- Contact -->
+    <div class="form-section">
+
+        <h3>📞 Contact Information</h3>
+
+        <label for="mobile">
+            Mobile Number
+        </label>
+
+        <input
+            id="mobile"
+            name="mobile"
+            type="tel"
+            placeholder="Enter contact mobile number"
+        >
+
+
+        <label for="email">
+            Email Address
+        </label>
+
+        <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Enter contact email address"
+        >
+
+    </div>
+
+
+    <!-- Identification -->
+    <div class="form-section">
+
+        <h3>🔎 Identification Details</h3>
+
+        <label for="birth_marks">
+            Birth Marks / Identifying Features
+        </label>
+
+        <textarea
+            id="birth_marks"
+            name="birth_marks"
+            rows="4"
+            placeholder="Describe birth marks, scars, tattoos or other identifying features..."
+        ></textarea>
+
+        <p class="field-hint">
+            Add any visible characteristics that may help with manual
+            identification.
+        </p>
+
+    </div>
+
+
+    <!-- Submit -->
+    <div class="form-actions">
+
+        <button type="submit">
+            🤖 Submit & Prepare AI Match
+        </button>
+
+        <a
+            href="{{ url_for('index') }}"
+            class="secondary-btn"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+
+</section>
+
+<!-- AI Information -->
+
+<section class="panel information-panel">
+
+
+<h2>🤖 What Happens Next?</h2>
+
+<div class="info-grid">
+
+    <div>
+        <span>1️⃣</span>
+        <div>
+            <strong>Face Detection</strong>
+            <p>
+                The system checks the uploaded image and detects the
+                visible face.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <span>2️⃣</span>
+        <div>
+            <strong>Case Submission</strong>
+            <p>
+                The submitted information is stored as a public/found-person
+                case.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <span>3️⃣</span>
+        <div>
+            <strong>AI Matching</strong>
+            <p>
+                The detected face can be compared with unresolved
+                missing-person cases.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+</section>
+
+{% endblock %}
+
