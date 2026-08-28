@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+{% block heading %}All Cases{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<section class="panel">
+
+
+<div class="panelhead">
+
+    <div>
+        <h2>📋 Missing Person Cases</h2>
+
+        <p>
+            Search, filter and review all registered missing-person cases.
+        </p>
+    </div>
+
+    <a
+        class="viewbtn"
+        href="{{ url_for('register') }}"
+    >
+        ➕ Register New Case
+    </a>
+
+</div>
+
+
+<!-- Filters -->
+<form class="filters" method="get">
+
+    <div class="filter-group">
+
+        <label for="search">
+            Search
+        </label>
+
+        <input
+            id="search"
+            name="q"
+            value="{{ q }}"
+            placeholder="Search by name or city..."
+        >
+
+    </div>
+
+
+    <div class="filter-group">
+
+        <label for="status">
+            Case Status
+        </label>
+
+        <select id="status" name="status">
+
+            <option
+                value="All"
+                {% if status == 'All' %}selected{% endif %}
+            >
+                All Cases
+            </option>
+
+            <option
+                value="NF"
+                {% if status == 'NF' %}selected{% endif %}
+            >
+                Missing
+            </option>
+
+            <option
+                value="F"
+                {% if status == 'F' %}selected{% endif %}
+            >
+                Found
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="filter-actions">
+
+        <button type="submit">
+            🔎 Apply Filter
+        </button>
+
+        <a
+            href="{{ url_for('cases') }}"
+            class="secondary-btn"
+        >
+            Clear
+        </a>
+
+    </div>
+
+</form>
+
+
+</section>
+
+<!-- Cases Table -->
+
+<section class="panel">
+
+
+<div class="panelhead">
+
+    <div>
+        <h2>Case Records</h2>
+
+        <p>
+            Showing registered missing-person records and their current status.
+        </p>
+    </div>
+
+    <div class="result-count">
+        {{ cases|length }} Cases
+    </div>
+
+</div>
+
+
+<div class="tablewrap">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>#</th>
+                <th>Person</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Last Seen</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for c in cases %}
+
+            <tr>
+
+                <!-- Number -->
+                <td class="case-number">
+                    {{ loop.index }}
+                </td>
+
+
+                <!-- Name -->
+                <td>
+
+                    <div class="person-cell">
+
+                        <div class="person-avatar">
+                            {{ (c.name or '?')[0]|upper }}
+                        </div>
+
+                        <div>
+                            <b>{{ c.name }}</b>
+
+                            {% if c.father_name %}
+                            <small>
+                                S/O {{ c.father_name }}
+                            </small>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <!-- Age -->
+                <td>
+                    {{ c.age or '—' }}
+                </td>
+
+
+                <!-- City -->
+                <td>
+                    📍 {{ c.city or 'Unknown' }}
+                </td>
+
+
+                <!-- Last Seen -->
+                <td>
+                    {{ c.last_seen or '—' }}
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                    {% if c.status == 'F' %}
+
+                    <span class="badge found">
+                        🟢 Found
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge missing">
+                        🔴 Missing
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+
+                <!-- Action -->
+                <td>
+
+                    <a
+                        class="link"
+                        href="{{ url_for('case_detail', case_id=c.id) }}"
+                    >
+                        View Case →
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty-table"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🔍
+                        </div>
+
+                        <h3>No Cases Found</h3>
+
+                        <p>
+                            No cases match your current search or filter.
+                        </p>
+
+                        <a
+                            href="{{ url_for('cases') }}"
+                            class="secondary-btn"
+                        >
+                            Clear Filters
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+</section>
+
+<!-- Case Information -->
+
+<section class="panel information-panel">
+
+
+<h2>ℹ️ Case Status</h2>
+
+<div class="info-grid">
+
+    <div>
+
+        <span>🔴</span>
+
+        <div>
+            <strong>Missing</strong>
+
+            <p>
+                The person is still registered as missing
+                or the case has not yet been resolved.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div>
+
+        <span>🟢</span>
+
+        <div>
+            <strong>Found</strong>
+
+            <p>
+                The case has been matched and confirmed
+                by an authorized user.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div>
+
+        <span>🤖</span>
+
+        <div>
+            <strong>AI Matching</strong>
+
+            <p>
+                Use AI Face Matching to compare a found-person
+                photograph with unresolved cases.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+
+</section>
+
+{% endblock %}
