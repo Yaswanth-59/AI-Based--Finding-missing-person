@@ -205,4 +205,5 @@ def confirm_match(case_id, public_id):
 def uploads(name): return send_from_directory(UPLOAD,name)
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=int(os.environ.get('PORT',5000)), debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
