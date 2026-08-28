@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+
+{% block heading %}Register Missing Person{% endblock %}
+
+{% block content %}
+
+<form
+    class="panel form"
+    method="post"
+    enctype="multipart/form-data"
+>
+
+<div class="panelhead">
+    <div>
+        <h2>📝 Register Missing Person</h2>
+        <p>
+            Enter the missing person's details and upload a clear photograph
+            for AI-assisted face matching.
+        </p>
+    </div>
+</div>
+
+
+<div class="grid">
+
+    <!-- Person Details -->
+    <div class="form-section">
+
+        <h2>👤 Person Details</h2>
+
+        <label for="name">
+            Full Name <span class="required">*</span>
+        </label>
+
+        <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter full name"
+            required
+        >
+
+
+        <label for="father_name">
+            Father's Name
+        </label>
+
+        <input
+            id="father_name"
+            name="father_name"
+            type="text"
+            placeholder="Enter father's name"
+        >
+
+
+        <label for="age">
+            Age
+        </label>
+
+        <input
+            id="age"
+            name="age"
+            type="number"
+            min="1"
+            max="120"
+            placeholder="Enter age"
+        >
+
+
+        <label for="mobile">
+            Mobile
+        </label>
+
+        <input
+            id="mobile"
+            name="mobile"
+            type="tel"
+            placeholder="Enter person's mobile number"
+        >
+
+
+        <label for="adhaar_card">
+            Aadhaar
+        </label>
+
+        <input
+            id="adhaar_card"
+            name="adhaar_card"
+            type="text"
+            inputmode="numeric"
+            placeholder="Enter Aadhaar number"
+        >
+
+
+        <label for="address">
+            Address
+        </label>
+
+        <textarea
+            id="address"
+            name="address"
+            rows="4"
+            placeholder="Enter complete address"
+        ></textarea>
+
+
+        <label for="city">
+            City <span class="required">*</span>
+        </label>
+
+        <input
+            id="city"
+            name="city"
+            type="text"
+            placeholder="Enter city"
+            required
+        >
+
+
+        <label for="birth_marks">
+            Birth Marks / Identifying Features
+        </label>
+
+        <textarea
+            id="birth_marks"
+            name="birth_marks"
+            rows="3"
+            placeholder="Scars, tattoos, birth marks or other identifying features"
+        ></textarea>
+
+
+        <label for="last_seen">
+            Last Seen <span class="required">*</span>
+        </label>
+
+        <input
+            id="last_seen"
+            name="last_seen"
+            type="text"
+            placeholder="Example: 15 Aug 2026, Railway Station"
+            required
+        >
+
+
+        <label for="description">
+            Additional Description
+        </label>
+
+        <textarea
+            id="description"
+            name="description"
+            rows="4"
+            placeholder="Clothing, physical appearance and other useful information..."
+        ></textarea>
+
+    </div>
+
+
+    <!-- Photo & Complainant -->
+    <div class="form-section">
+
+        <h2>📷 Photo & Complainant</h2>
+
+        <label for="photo">
+            Person Photo <span class="required">*</span>
+        </label>
+
+        <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            required
+        >
+
+        <p class="field-hint">
+            Upload a clear, front-facing photograph with good lighting.
+            JPG, PNG or WEBP recommended.
+        </p>
+
+
+        <label for="face_index">
+            Face Number
+        </label>
+
+        <input
+            id="face_index"
+            name="face_index"
+            type="number"
+            min="0"
+            value="0"
+        >
+
+        <p class="hint">
+            If the photo contains multiple faces, select the correct
+            face number. Face numbering starts at <strong>0</strong>.
+        </p>
+
+
+        <div class="photo-guidelines">
+
+            <h3>🎯 Photo Guidelines</h3>
+
+            <ul>
+                <li>Use a front-facing photograph.</li>
+                <li>Make sure the face is clearly visible.</li>
+                <li>Avoid very dark or blurry images.</li>
+                <li>Prefer one clear face in the photograph.</li>
+                <li>Good image quality improves AI matching.</li>
+            </ul>
+
+        </div>
+
+
+        <h2 class="section-spacing">
+            📞 Complainant Information
+        </h2>
+
+
+        <label for="complainant_name">
+            Complainant Name <span class="required">*</span>
+        </label>
+
+        <input
+            id="complainant_name"
+            name="complainant_name"
+            type="text"
+            placeholder="Enter complainant name"
+            required
+        >
+
+
+        <label for="complainant_mobile">
+            Complainant Phone <span class="required">*</span>
+        </label>
+
+        <input
+            id="complainant_mobile"
+            name="complainant_mobile"
+            type="tel"
+            placeholder="Enter complainant phone number"
+            required
+        >
+
+
+        <label for="complainant_email">
+            Complainant Email
+        </label>
+
+        <input
+            id="complainant_email"
+            name="complainant_email"
+            type="email"
+            placeholder="Enter email address"
+        >
+
+
+        <div class="privacy-note">
+
+            <strong>🔐 Information Notice</strong>
+
+            <p>
+                The submitted information is used for missing-person
+                case management and AI-assisted matching.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Submit -->
+<div class="form-actions">
+
+    <button type="submit">
+        ✅ Register Missing Person Case
+    </button>
+
+    <a
+        href="{{ url_for('index') }}"
+        class="secondary-btn"
+    >
+        Cancel
+    </a>
+
+</div>
+
+
+</form>
+
+<!-- AI Process -->
+
+<section class="panel information-panel">
+
+
+<h2>🤖 AI Matching Process</h2>
+
+<div class="info-grid">
+
+    <div>
+        <span>1️⃣</span>
+        <div>
+            <strong>Upload Photo</strong>
+            <p>
+                A clear photograph of the missing person is uploaded.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <span>2️⃣</span>
+        <div>
+            <strong>Face Detection</strong>
+            <p>
+                The system detects the face from the uploaded image.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <span>3️⃣</span>
+        <div>
+            <strong>Case Registration</strong>
+            <p>
+                The person's information is securely stored as an
+                unresolved missing-person case.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <span>4️⃣</span>
+        <div>
+            <strong>AI Matching</strong>
+            <p>
+                The face can later be compared with found-person
+                submissions.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+</section>
+
+{% endblock %}
+
