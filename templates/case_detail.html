@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+
+{% block heading %}Case Details{% endblock %}
+
+{% block content %}
+
+<!-- Case Header -->
+
+<section class="panel case-header">
+
+
+<div class="case-title">
+
+    <div class="person-avatar large">
+        {{ (case.name or '?')[0]|upper }}
+    </div>
+
+    <div>
+        <h1>{{ case.name }}</h1>
+
+        {% if case.status == 'F' %}
+
+        <span class="badge found">
+            🟢 Found
+        </span>
+
+        {% else %}
+
+        <span class="badge missing">
+            🔴 Missing
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="case-id">
+    <small>CASE ID</small>
+    <code>{{ case.id }}</code>
+</div>
+
+</section>
+
+<!-- Main Details -->
+
+<section class="panel">
+
+
+<div class="detail-layout">
+
+    <!-- Person Photo -->
+    <div class="photo-section">
+
+        <h2>📷 Person Photo</h2>
+
+        <div class="case-photo">
+
+            <img
+                src="{{ url_for('case_photo', case_id=case.id) }}"
+                alt="{{ case.name }}"
+            >
+
+        </div>
+
+        <p class="hint">
+            Registered photograph used for AI-assisted matching.
+        </p>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="details-section">
+
+        <h2>👤 Personal Information</h2>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <small>Full Name</small>
+                <strong>{{ case.name }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <small>Age</small>
+                <strong>{{ case.age or '—' }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <small>Father's Name</small>
+                <strong>{{ case.father_name or '—' }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <small>City</small>
+                <strong>{{ case.city or '—' }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <small>Last Seen</small>
+                <strong>{{ case.last_seen or '—' }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <small>Address</small>
+                <strong>{{ case.address or '—' }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Identification -->
+        <h2 class="section-spacing">
+            🔎 Identification Information
+        </h2>
+
+        <div class="detail-block">
+
+            <small>Birth Marks / Identifying Features</small>
+
+            <p>
+                {{ case.birth_marks or 'No information provided.' }}
+            </p>
+
+        </div>
+
+
+        <div class="detail-block">
+
+            <small>Additional Description</small>
+
+            <p>
+                {{ case.description or 'No additional description provided.' }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- Complainant Information -->
+
+<section class="panel">
+
+
+<div class="panelhead">
+
+    <div>
+        <h2>📞 Complainant Information</h2>
+        <p>Contact information associated with this case.</p>
+    </div>
+
+</div>
+
+<div class="detail-grid">
+
+    <div class="detail-item">
+
+        <small>Complainant Name</small>
+
+        <strong>
+            {{ case.complainant_name or '—' }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-item">
+
+        <small>Phone</small>
+
+        <strong>
+            {{ case.complainant_mobile or '—' }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-item">
+
+        <small>Email</small>
+
+        <strong>
+            {{ case.complainant_email or '—' }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- AI Match Information -->
+
+{% if case.matched_with %}
+
+<section class="panel match-confirmed">
+
+<div class="panelhead">
+
+    <div>
+        <h2>🤖 AI Match Confirmed</h2>
+
+        <p>
+            This case has been linked with a public/found-person submission.
+        </p>
+    </div>
+
+    <span class="badge found">
+        🟢 MATCH CONFIRMED
+    </span>
+
+</div>
+
+<div class="match-id">
+
+    <small>Matched Public Submission ID</small>
+
+    <code>{{ case.matched_with }}</code>
+
+</div>
+
+
+</section>
+
+{% else %}
+
+<section class="panel">
+
+
+<div class="panelhead">
+
+    <div>
+        <h2>🤖 AI Face Matching</h2>
+
+        <p>
+            This case has not been linked to a confirmed found-person
+            submission yet.
+        </p>
+    </div>
+
+    <a
+        href="{{ url_for('match') }}"
+        class="viewbtn"
+    >
+        🔎 Run AI Matching
+    </a>
+
+</div>
+
+</section>
+
+{% endif %}
+
+<!-- Case ID -->
+
+<section class="panel">
+
+
+<h2>🆔 Case Information</h2>
+
+<div class="case-meta">
+
+    <div>
+        <small>Case ID</small>
+        <code>{{ case.id }}</code>
+    </div>
+
+    <div>
+        <small>Current Status</small>
+
+        {% if case.status == 'F' %}
+
+        <span class="badge found">
+            🟢 Found
+        </span>
+
+        {% else %}
+
+        <span class="badge missing">
+            🔴 Missing
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- Navigation -->
+
+<div class="form-actions">
+
+
+<a
+    href="{{ url_for('cases') }}"
+    class="secondary-btn"
+>
+    ← Back to All Cases
+</a>
+
+<a
+    href="{{ url_for('match') }}"
+    class="viewbtn"
+>
+    🤖 AI Face Matching
+</a>
+
+
+</div>
+
+{% endblock %}
+
