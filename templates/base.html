@@ -1,0 +1,266 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+>
+
+<meta
+    name="description"
+    content="AI-powered Missing Person Identification and Face Matching System"
+>
+
+<title>
+    {% block title %}Missing Person AI{% endblock %}
+</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+>
+
+</head>
+
+<body>
+
+{% if session.get('user') %}
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside>
+
+<!-- Brand -->
+<div class="brand">
+
+    <div class="brand-icon">
+        🔎
+    </div>
+
+    <div class="brand-text">
+        <strong>MissingPerson</strong><span>AI</span>
+    </div>
+
+</div>
+
+
+<!-- Navigation -->
+<nav>
+
+    <div class="nav-section">
+        <small>MAIN MENU</small>
+    </div>
+
+
+    <a
+        href="{{ url_for('index') }}"
+        class="{% if request.endpoint == 'index' %}active{% endif %}"
+    >
+        <span>📊</span>
+        <span>Dashboard</span>
+    </a>
+
+
+    <a
+        href="{{ url_for('register') }}"
+        class="{% if request.endpoint == 'register' %}active{% endif %}"
+    >
+        <span>➕</span>
+        <span>Register Case</span>
+    </a>
+
+
+    <a
+        href="{{ url_for('cases') }}"
+        class="{% if request.endpoint == 'cases' %}active{% endif %}"
+    >
+        <span>📋</span>
+        <span>All Cases</span>
+    </a>
+
+
+    <div class="nav-section">
+        <small>AI OPERATIONS</small>
+    </div>
+
+
+    <a
+        href="{{ url_for('public_case') }}"
+        class="{% if request.endpoint == 'public_case' %}active{% endif %}"
+    >
+        <span>📷</span>
+        <span>Submit Found Person</span>
+    </a>
+
+
+    <a
+        href="{{ url_for('match') }}"
+        class="{% if request.endpoint == 'match' %}active{% endif %}"
+    >
+        <span>🤖</span>
+        <span>AI Face Matching</span>
+    </a>
+
+</nav>
+
+
+<!-- Sidebar Bottom -->
+<div class="sidebottom">
+
+    <div class="user-card">
+
+        <div class="user-avatar">
+            {{ (session.get('user') or '?')[0]|upper }}
+        </div>
+
+        <div>
+
+            <small>Logged in as</small>
+
+            <b>
+                {{ session.get('user') }}
+            </b>
+
+        </div>
+
+    </div>
+
+
+    <a
+        class="logout-btn"
+        href="{{ url_for('logout') }}"
+    >
+        🚪 Logout
+    </a>
+
+</div>
+
+
+</aside>
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main>
+
+<!-- Header -->
+<header>
+
+    <div>
+
+        <h1>
+            {% block heading %}Dashboard{% endblock %}
+        </h1>
+
+        <p>
+            AI-powered missing person identification
+        </p>
+
+    </div>
+
+
+    <div class="header-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+            AI System Online
+        </span>
+
+    </div>
+
+</header>
+
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="alerts">
+
+            {% for category, msg in messages %}
+
+                <div class="alert {{ category }}">
+
+                    {% if category == 'success' %}
+                        <span>✅</span>
+                    {% elif category == 'danger' %}
+                        <span>❌</span>
+                    {% elif category == 'warning' %}
+                        <span>⚠️</span>
+                    {% else %}
+                        <span>ℹ️</span>
+                    {% endif %}
+
+                    <span>
+                        {{ msg }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
+
+<!-- Page Content -->
+<div class="content">
+
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+
+
+<!-- Footer -->
+<footer>
+
+    <span>
+        MissingPersonAI
+    </span>
+
+    <span>
+        AI-assisted identification system
+    </span>
+
+</footer>
+
+</main>
+
+{% else %}
+
+<!-- =========================
+     AUTHENTICATION PAGES
+========================= -->
+
+<div class="auth-wrapper">
+
+```
+{% block authcontent %}
+
+{% endblock %}
+
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
+
+
