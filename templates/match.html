@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+
+{% block heading %}AI Face Matching{% endblock %}
+
+{% block content %}
+
+<!-- Page Introduction -->
+
+<section class="panel">
+
+
+<div class="panelhead">
+    <div>
+        <h2>🤖 Find Missing Person Match</h2>
+        <p>
+            Upload a clear found-person photo. The AI system detects the face
+            and compares it with registered unresolved missing-person cases.
+        </p>
+    </div>
+</div>
+
+<!-- Upload Form -->
+<form method="post"
+      enctype="multipart/form-data"
+      class="matchupload">
+
+    <label for="photo">Found Person Photo *</label>
+
+    <input
+        id="photo"
+        name="photo"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        required
+    >
+
+    <button type="submit">
+        🔎 Find Matching Person
+    </button>
+
+</form>
+
+<div class="hint">
+    <strong>For better results:</strong>
+    Use a front-facing photo with good lighting, sharp image quality
+    and a clearly visible face.
+    <br>
+    Maximum upload size: <strong>10 MB</strong>.
+</div>
+
+
+</section>
+
+<!-- Uploaded Image -->
+
+{% if uploaded_name %}
+
+<section class="panel uploadpreview">
+
+
+<div class="panelhead">
+    <div>
+        <h2>📷 Uploaded Photo</h2>
+        <p>Face used for AI comparison.</p>
+    </div>
+</div>
+
+<div class="preview-container">
+
+    <img
+        src="{{ url_for('uploads', name=uploaded_name) }}"
+        alt="Uploaded found person"
+        class="uploaded-image"
+    >
+
+</div>
+
+
+</section>
+
+{% endif %}
+
+<!-- AI Results -->
+
+{% if results %}
+
+<section class="panel">
+
+
+<div class="panelhead">
+
+    <div>
+        <h2>🎯 Top AI Matches</h2>
+
+        <p>
+            Candidates are ranked according to AI screening similarity.
+            A similarity score is not proof of identity.
+            An authorized person must verify the candidate before
+            confirming a case.
+        </p>
+    </div>
+
+    <div class="result-count">
+        {{ results|length }} Matches
+    </div>
+
+</div>
+
+
+<!-- Match Results -->
+<div class="match-results">
+
+    {% for r in results %}
+
+    <article class="matchrow">
+
+        <!-- Rank -->
+        <div class="match-rank">
+
+            <div class="rank-number">
+                #{{ r.rank }}
+            </div>
+
+            <span class="badge {{ r.match_class }}">
+                {{ r.match_label }}
+            </span>
+
+        </div>
+
+
+        <!-- Candidate Information -->
+        <div class="matchinfo">
+
+            <h3>
+                {{ r.registered.name }}
+            </h3>
+
+            <p class="location">
+                📍 {{ r.registered.city or 'Unknown' }}
+                &nbsp; · &nbsp;
+                Last seen: {{ r.registered.last_seen }}
+            </p>
+
+
+            <!-- Score -->
+            <div class="score-section">
+
+                <div class="score-header">
+
+                    <span>
+                        <b>AI Match Score</b>
+                    </span>
+
+                    <strong>
+                        {{ '%.1f'|format(r.similarity) }} / 100
+                    </strong>
+
+                </div>
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        style="width:{{ [r.similarity, 100]|min }}%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Technical Details -->
+            <div class="match-details">
+
+                <div>
+                    <small>Recognition Method</small>
+                    <strong>{{ r.method }}</strong>
+                </div>
+
+                <div>
+                    <small>{{ r.distance_label }}</small>
+                    <strong>{{ '%.2f'|format(r.distance) }}</strong>
+                </div>
+
+                {% if r.top_margin > 0 %}
+
+                <div>
+                    <small>Top-result Margin</small>
+                    <strong>
+                        {{ '%.1f'|format(r.top_margin) }} points
+                    </strong>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Recommendation -->
+            <div class="recommendation">
+
+                <strong>Recommendation:</strong>
+
+                <span>
+                    {{ r.recommendation }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Action -->
+        <div class="matchactions">
+
+            <a
+                class="viewbtn"
+                href="{{ url_for('case_detail', case_id=r.registered.id) }}"
+            >
+                👁 View Case
+            </a>
+
+        </div>
+
+    </article>
+
+    {% endfor %}
+
+</div>
+
+
+</section>
+
+{% endif %}
+
+<!-- No Results -->
+
+{% if uploaded_name and not results %}
+
+<section class="panel empty-state">
+
+
+<div class="empty-icon">🔍</div>
+
+<h2>No Matching Cases Found</h2>
+
+<p>
+    No registered unresolved case could be compared with the uploaded
+    photograph.
+</p>
+
+<p class="hint">
+    Try uploading a clearer, front-facing photograph with good lighting.
+</p>
+
+
+</section>
+
+{% endif %}
+
+<!-- Information -->
+
+<section class="panel information-panel">
+
+
+<h2>ℹ️ About AI Matching</h2>
+
+<div class="info-grid">
+
+    <div>
+        <span>🟢</span>
+        <div>
+            <strong>High Match</strong>
+            <p>Strong similarity. Manual verification is still required.</p>
+        </div>
+    </div>
+
+    <div>
+        <span>🟡</span>
+        <div>
+            <strong>Possible Match</strong>
+            <p>Potential similarity. Review the complete case details.</p>
+        </div>
+    </div>
+
+    <div>
+        <span>🔴</span>
+        <div>
+            <strong>Low Match</strong>
+            <p>Weak similarity. Do not confirm without additional evidence.</p>
+        </div>
+    </div>
+
+</div>
+
+
+</section>
+
+{% endblock %}
+
