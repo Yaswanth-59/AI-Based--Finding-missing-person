@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>AI Missing Person Dashboard</h1>
+        <p>Monitor registered cases, found persons and AI matching activity.</p>
+    </div>
+</div>
+
+<!-- Statistics -->
+
+<div class="cards">
+
+
+<div class="card">
+    <small>Total Cases</small>
+    <strong>{{ total }}</strong>
+    <span>All registered cases</span>
+</div>
+
+<div class="card warn">
+    <small>Missing / Unresolved</small>
+    <strong>{{ missing }}</strong>
+    <span>Cases still under investigation</span>
+</div>
+
+<div class="card good">
+    <small>Found</small>
+    <strong>{{ found }}</strong>
+    <span>Successfully identified cases</span>
+</div>
+
+<div class="card">
+    <small>Public Submissions</small>
+    <strong>{{ public }}</strong>
+    <span>Submitted found-person reports</span>
+</div>
+
+
+</div>
+
+<!-- Quick Actions -->
+
+<section class="panel">
+
+<div class="panelhead">
+    <div>
+        <h2>Quick Actions</h2>
+        <p>Access the most frequently used features.</p>
+    </div>
+</div>
+
+<div class="actions">
+
+    <a href="{{ url_for('register') }}">
+        <span>➕</span>
+        <div>
+            <strong>Register Missing Person</strong>
+            <small>Create a new missing-person case</small>
+        </div>
+    </a>
+
+    <a href="{{ url_for('public_case') }}">
+        <span>📷</span>
+        <div>
+            <strong>Submit Found Person</strong>
+            <small>Upload information about a found person</small>
+        </div>
+    </a>
+
+    <a href="{{ url_for('match') }}">
+        <span>🤖</span>
+        <div>
+            <strong>Run AI Matching</strong>
+            <small>Compare a photo with missing cases</small>
+        </div>
+    </a>
+
+    <a href="{{ url_for('cases') }}">
+        <span>📋</span>
+        <div>
+            <strong>View All Cases</strong>
+            <small>Search and manage registered cases</small>
+        </div>
+    </a>
+
+</div>
+
+
+</section>
+
+<!-- Cases by City -->
+
+<section class="panel">
+
+<div class="panelhead">
+    <div>
+        <h2>Cases by City</h2>
+        <p>Distribution of registered missing-person cases.</p>
+    </div>
+</div>
+
+{% if cities %}
+
+<div class="bars">
+
+    {% for city, count in cities.items() %}
+
+    <div class="city-row">
+
+        <div class="city-info">
+            <span>{{ city }}</span>
+            <b>{{ count }}</b>
+        </div>
+
+        <div class="bar">
+            <i style="width:{{ [count * 12, 100]|min }}%"></i>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-state">
+    <div>📊</div>
+    <h3>No Case Data Yet</h3>
+    <p>Register a missing-person case to see city statistics here.</p>
+</div>
+
+{% endif %}
+
+</section>
+
+{% endblock %}
+
